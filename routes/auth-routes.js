@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
         console.log('Login route hit');
 
         const user = await User.findOne({where: {email}});
-        console.log("user: ",user);
+        // console.log("user: ",user);
 
         if(!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({error: 'Invalid password'});
