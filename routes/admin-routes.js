@@ -1,6 +1,4 @@
 import express from 'express';
-import User from './../models/user.js';
-import Role from './../models/role.js';
 import {isAdmin} from "../middleware/checkAdmin.js";
 import {authenticateToken} from "../middleware/authenticateToken.js";
 import {deleteUser, getAnalytics, getUser, updateUser} from "../controllers/adminController.js";

@@ -28,7 +28,7 @@ exports.getExpense = async (req, res) => {
 }
 
 exports.updateExpense = async (req, res) => {
-    const { amount, description, category, paymentMethod, date, userId } = req.body;
+    const { amount, description, category, paymentMethod, date } = req.body;
 
     try {
         const expense = await Expense.findOne({ where: { id:req.params.id }});
