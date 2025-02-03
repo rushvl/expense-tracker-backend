@@ -8,8 +8,9 @@ import expenseRoutes from "./routes/expense-routes.js";
 import sequelize from "./db.js";
 import User from "./models/user.js";
 import {log} from "debug";
-import {Role} from "./models/role.js";
+import Role from "./models/role.js";
 import Expense from "./models/expense.js";
+import adminRoutes from "./routes/admin-routes.js";
 dotenv.config();
 
 const app = express();
@@ -22,7 +23,8 @@ app.use(cookieParser());
 //define routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
-// app.use('/api/expenses', expenseRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/expenses', expenseRoutes);
 
 sequelize.authenticate().then(()=>{
     console.log("DB connected");

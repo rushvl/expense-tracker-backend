@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import {Role} from "../models/role.js";
+import Role from "../models/role.js";
 
 export const isAdmin = async (req, res, next) => {
     try {

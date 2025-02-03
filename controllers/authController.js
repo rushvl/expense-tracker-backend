@@ -1,8 +1,8 @@
-const bcrypt = require("bcrypt");
-const User = require("../models/user.js");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcrypt";
+import User from "../models/user.js";
+import jwt from "jsonwebtoken";
 
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     if(!name || !email || !password) {
@@ -18,7 +18,7 @@ exports.registerUser = async (req, res) => {
     }
 }
 
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     if(!email || !password){
         return res.status(500).json({error:'Invalid email or password'});

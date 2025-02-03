@@ -1,6 +1,6 @@
-const Expense = require("../models/expense.js");
+import Expense from "../models/expense.js";
 
-exports.createExpense = async (req, res) => {
+export const createExpense = async (req, res) => {
     const { amount, description, category, paymentMethod, userId } = req.body;
 
     try {
@@ -17,7 +17,7 @@ exports.createExpense = async (req, res) => {
     }
 }
 
-exports.getExpense = async (req, res) => {
+export const getExpense = async (req, res) => {
     const id = req.user.id;
     try {
         const expenses = await Expense.findAll({where: {userId: id}});
@@ -27,7 +27,7 @@ exports.getExpense = async (req, res) => {
     }
 }
 
-exports.updateExpense = async (req, res) => {
+export const updateExpense = async (req, res) => {
     const { amount, description, category, paymentMethod, date } = req.body;
 
     try {
@@ -50,7 +50,7 @@ exports.updateExpense = async (req, res) => {
     }
 }
 
-exports.deleteExpense = async (req, res) => {
+export const deleteExpense = async (req, res) => {
     try {
         const expense = await Expense.findOne({ where: { id:req.params.id }});
 

@@ -1,7 +1,7 @@
-const User = require("../models/user.js");
-const {Role} = require("../models/role.js");
+import User from "../models/user.js";
+import Role from "../models/role.js";
 
-exports.getUser = async (req, res) => {
+export const getUser = async (req, res) => {
     try {
         const users = await User.findAll({
             attributes: { exclude: ['password'] },
@@ -14,7 +14,7 @@ exports.getUser = async (req, res) => {
     }
 }
 
-exports.updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
     const { userId } = req.params;
     const { roleId } = req.body;
 
@@ -35,7 +35,7 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-exports.deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
     const { userId } = req.params;
 
     try {
@@ -55,7 +55,7 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
-exports.getAnalytics = async (req, res) => {
+export const getAnalytics = async (req, res) => {
     try {
         const userCount = await User.count();
         const activeUsers = await User.count({ where: { isActive: true } });

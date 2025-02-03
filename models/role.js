@@ -2,7 +2,7 @@ import sequelize from "../db.js";
 import {DataTypes} from "sequelize";
 import User from "./user.js";
 
-export const Role = sequelize.define('Role', {
+const Role = sequelize.define('Role', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -18,3 +18,5 @@ export const Role = sequelize.define('Role', {
         timestamps: false,
     }
 );
+
+export default Role;
