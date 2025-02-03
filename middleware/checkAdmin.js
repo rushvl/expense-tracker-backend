@@ -6,8 +6,7 @@ export const isAdmin = async (req, res, next) => {
         const user = await User.findByPk(req.user.id, {
             include: [{model: Role}],
         });
-
-        if (user && user.roleId.role === 'admin') next();
+        if (user && user.Role.role === 'admin') next();
         else {
             res.status(403).json({error: "Access denied, admins only"});
         }

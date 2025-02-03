@@ -5,7 +5,7 @@ export const getUser = async (req, res) => {
     try {
         const users = await User.findAll({
             attributes: { exclude: ['password'] },
-            include: [{ model: Role, attributes: ['name'] }],
+            include: [{ model: Role, attributes: ['role'] }],
         });
         res.json(users);
     } catch (error) {
@@ -16,7 +16,7 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const { userId } = req.params;
-    const { roleId } = req.body;
+    const { name, email, password, isActive, roleId } = req.body;
 
     try {
         const user = await User.findByPk(userId);
@@ -25,10 +25,15 @@ export const updateUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found.' });
         }
 
-        user.roleId = roleId;
+        user.name = name !== undefined ? name : user.name;
+        user.email = email !== undefined ? email : user.email;
+        user.password = password !== undefined ? password : user.password;
+        user.isActive = isActive !== undefined ? isActive : user.isActive;
+        user.roleId = roleId !== undefined ? roleId : user.roleId;
+
         await user.save();
 
-        res.json({ message: 'User role updated successfully.', user });
+        res.status(201).json({ message: 'User role updated successfully.', user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error.' });
