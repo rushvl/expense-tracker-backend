@@ -11,6 +11,8 @@ import {log} from "debug";
 import Role from "./models/role.js";
 import Expense from "./models/expense.js";
 import adminRoutes from "./routes/admin-routes.js";
+import analyticsRoutes from './routes/analytics-routes.js';
+
 dotenv.config();
 
 const app = express();
@@ -25,6 +27,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/analytics', analyticsRoutes);
+
 
 sequelize.authenticate().then(()=>{
     console.log("DB connected");
