@@ -4,9 +4,9 @@ import {createExpense, deleteExpense, getExpense, updateExpense} from "../contro
 
 const router = express.Router();
 
-router.post('/expenses', authenticateToken, createExpense);
-router.get('/expenses', authenticateToken, getExpense);
-router.put('/expenses/:id', authenticateToken, updateExpense);
-router.delete('/expenses/:id', authenticateToken, deleteExpense);
+router.post('/', authenticateToken, createExpense);
+router.get('/', authenticateToken, getExpense);
+router.put('/:id', authenticateToken, updateExpense);
+router.delete('/:id', authenticateToken, deleteExpense);
 
 export default router;

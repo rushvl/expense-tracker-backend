@@ -1,5 +1,9 @@
 import Expense from "../models/expense.js";
+import { Op } from "sequelize";
 
+/*
+* CRUD Operations for creating entries
+* */
 export const createExpense = async (req, res) => {
     const { amount, description, category, paymentMethod, userId } = req.body;
 
@@ -17,15 +21,15 @@ export const createExpense = async (req, res) => {
     }
 }
 
-export const getExpense = async (req, res) => {
-    const id = req.user.id;
-    try {
-        const expenses = await Expense.findAll({where: {userId: id}});
-        res.status(201).json(expenses);
-    } catch(error) {
-        res.status(500).json({success:false, message: 'Unable to list expenses', error: error.message});
-    }
-}
+// export const getExpense = async (req, res) => {
+//     const id = req.user.id;
+//     try {
+//         const expenses = await Expense.findAll({where: {userId: id}});
+//         res.status(201).json(expenses);
+//     } catch(error) {
+//         res.status(500).json({success:false, message: 'Unable to list expenses', error: error.message});
+//     }
+// }
 
 export const updateExpense = async (req, res) => {
     const { amount, description, category, paymentMethod, date } = req.body;
@@ -64,3 +68,64 @@ export const deleteExpense = async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to delete expense', error: err.message });
     }
 }
+
+export const getExpense = async (req, res) => {
+    try {
+        const {
+            page = 1,
+            limit = 10,
+            category,
+            paymentMethod,
+            startDate,
+            endDate,
+            search,
+            sortBy = 'date',
+            order = 'DESC'
+        } = req.query;
+
+        const offset = (page - 1) * limit;
+
+        const whereClause = {};
+
+        // Filtering by category
+        if (category) {
+            whereClause.category = category;
+        }
+
+        // Filtering by payment method
+        if (paymentMethod) {
+            whereClause.paymentMethod = paymentMethod;
+        }
+
+        // Filtering by date range
+        if (startDate && endDate) {
+            whereClause.date = {
+                [Op.between]: [new Date(startDate), new Date(endDate)]
+            };
+        }
+
+        // Search by description
+        if (search) {
+            whereClause.description = { [Op.iLike]: `%${search}%` };
+        }
+
+        // Fetch expenses with filtering, sorting, and pagination
+        const expenses = await Expense.findAndCountAll({
+            where: whereClause,
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [[sortBy, order]], // Sorting dynamically
+        });
+
+        res.json({
+            totalItems: expenses.count,
+            totalPages: Math.ceil(expenses.count / limit),
+            currentPage: parseInt(page),
+            expenses: expenses.rows,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
